@@ -3,11 +3,11 @@ Streamlit dashboard — a pure frontend over the FastAPI service. Holds no
 pipeline logic itself; every action here is just an HTTP call to the API
 we already built and tested in Sub-phase 5.1.
 """
-
+import os
 import requests
 import streamlit as st
 
-API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(page_title="RAG Pipeline", layout="wide")
 st.title("📚 RAG Pipeline — Hybrid Search over FastAPI Docs")
