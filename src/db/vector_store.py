@@ -59,6 +59,23 @@ def collection_stats()->dict:
         stats[strategy]=len(result['ids'])
     return stats
 
+def list_documents() -> list[dict]:
+    """Returns every unique source document currently indexed, with a
+    chunk count per strategy."""
+    collection = get_collection()
+    result = collection.get()  # pulls everything; fine at this corpus scale
+
+    by_source: dict[str, dict[str, int]] = {}
+    for meta in result["metadatas"]:
+        source = meta["source_path"]
+        strategy = meta["strategy"]
+        by_source.setdefault(source, {"fixed": 0, "structural": 0, "semantic": 0})
+        by_source[source][strategy] += 1
+
+    return [
+        {"source_path": source, "chunks_by_strategy": counts}
+        for source, counts in sorted(by_source.items())
+    ]
 
 
     

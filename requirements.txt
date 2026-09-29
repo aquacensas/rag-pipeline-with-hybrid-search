@@ -2,7 +2,7 @@ python-dotenv
 pydantic
 openai
 chromadb
-rank-bm25
+rank_bm25
 langchain-text-splitters
 pypdf
 beautifulsoup4

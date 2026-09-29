@@ -1,26 +1,27 @@
-'''Runs the complete golden dataset through the eval pipeline and prints
-a full summary report.'''
+'''Sanity check: run eval on a small handful of golden cases first,
+covering different question types, before running the full dataset.'''
 
 from src.evaluation.golden_dataset import load_golden_dataset
 from src.evaluation.metrics import run_eval
 
 dataset = load_golden_dataset()
-print(f"Running full eval on {len(dataset)} golden test cases...\n")
 
-report = run_eval(dataset)
+subset = [
+    next(e for e in dataset if e.id == "q001"),  # straightforward
+    next(e for e in dataset if e.id == "q003"),  # multi_hop
+    next(e for e in dataset if e.id == "q004"),  # no_answer
+    next(e for e in dataset if e.id == "q007"),  # ambiguous
+]
 
-print(f"\n=================== Summary ===================")
-print(f"Mean correctness (straightforward + multi_hop): {report.mean_correctness:.3f}")
+report = run_eval(subset)
+
+print(f"\n ------------- Summary -------------  ")
+print(f"Mean correctness: {report.mean_correctness:.3f}")
 print(f"Mean faithfulness: {report.mean_faithfulness:.3f}")
 print(f"Mean retrieval relevance: {report.mean_retrieval_relevance:.3f}")
-print(f"Mean ambiguity handling: {report.mean_ambiguity_handling:.3f}")
-print(f"Refusal accuracy (no_answer cases): {report.refusal_accuracy:.3f}")
+print(f"\nBreakdown by type: {report.breakdown_by_type}")
 
-print(f"\nBreakdown by type:")
-for qtype, stats in report.breakdown_by_type.items():
-    print(f"  {qtype}: {stats}")
-
-print(f"\n----------------- Per-case detail --------------------")
+print(f"\n ------------- Per-case detail -------------")
 for r in report.results:
     print(f"[{r.id}] ({r.question_type.value})")
     if r.correctness is not None:
@@ -34,3 +35,6 @@ for r in report.results:
     if r.correctly_refused is not None:
         print(f"  Correctly refused: {r.correctly_refused}")
     print()
+
+print(f"\nRefusal accuracy: {report.refusal_accuracy:.3f}")
+print(f"Mean ambiguity handling: {report.mean_ambiguity_handling:.3f}")

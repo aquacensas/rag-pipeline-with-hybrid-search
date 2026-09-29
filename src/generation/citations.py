@@ -41,7 +41,7 @@ class CitationVerificationResult:
     claims: list[ClaimCitation]
     total_citations: int
     verified_citations: int
-    coverage: float  # verified_citations / total_citations, 0.0-1.0
+    coverage: float | None # verified_citations / total_citations, 0.0-1.0, or None if there were no citations to check
 
 
 def split_into_claims(answer_text: str) -> list[str]:
@@ -133,11 +133,11 @@ def verify_citations(answer_text: str, retrieved_chunks: list[dict]) -> Citation
         ))
 
     # These run ONCE, after ALL claims are processed — not per-claim
-    coverage = verified_citations / total_citations if total_citations > 0 else 0.0
-
+    coverage = verified_citations / total_citations if total_citations > 0 else None
+    coverage_display = f"{coverage:.1%}" if coverage is not None else "N/A (no citations made)"
     logger.info(
         f"Citation verification: {verified_citations}/{total_citations} "
-        f"citations supported ({coverage:.1%} coverage)"
+        f"citations supported ({coverage_display} coverage)"
     )
 
     return CitationVerificationResult(
