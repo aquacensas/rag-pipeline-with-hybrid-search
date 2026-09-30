@@ -5,7 +5,6 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B.svg)
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20Store-orange.svg)
 ![Tests](https://img.shields.io/badge/tests-15%20passing-brightgreen.svg)
-![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 
 A production-style Retrieval-Augmented Generation system built over FastAPI's official documentation. It combines dense vector search with sparse keyword search, reranks results with an LLM judge, generates citation-grounded answers, independently verifies every citation, and refuses to answer when it isn't confident enough — all validated against a hand-verified 50-question evaluation suite.
 
