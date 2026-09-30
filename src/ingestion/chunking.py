@@ -66,7 +66,7 @@ def chunk_structural(doc:RawDocument, max_chunk_size:int=1200)->list[Chunk]:
     if not matches:
         return [
             Chunk(
-                chunk_id=f'{c.chunk_id.replace('::fixed::',':structural::')}',
+                chunk_id=f'{c.chunk_id.replace("::fixed::", ":structural::")}',
                 source_path=c.source_path,
                 chunk_index=c.chunk_index,
                 content=c.content,

@@ -20,7 +20,7 @@ def reciprocal_rank_fusion(dense_results:list[dict],sparse_results:list[dict],de
         for rank,result in enumerate(results,start=1):
             '''Uses chunk_id + source-path together as a unique key,
             since chunk_id alone isnt unique across documents'''
-            key=f'{result['source_path']}::{result['chunk_id']}' # To recognise same chunk in both the result
+            key=f'{result["source_path"]}::{result["chunk_id"]}' # To recognise same chunk in both the result
             rrf_contribution=weight*(1/(RRF_K+rank))
             scores[key]=scores.get(key,0)+rrf_contribution
             chunk_lookup[key]=result
